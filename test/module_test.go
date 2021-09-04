@@ -35,7 +35,7 @@ func TestTerraformModule(t *testing.T) {
 	outputHelloJohnDoe := terraform.Output(t, terraformOptions, "hello_john")
 	outputHelloWorld := terraform.Output(t, terraformOptions, "hello_world")
 	outputNow := terraform.Output(t, terraformOptions, "now")
-	re, _ := regexp.Compile("[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z")
+	re, _ := regexp.Compile("^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$")
 
 	assert.Equal(t, "Hello, John Doe!", outputHelloJohnDoe)
 	assert.Equal(t, "Hello, World!", outputHelloWorld)

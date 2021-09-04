@@ -18,5 +18,5 @@ output "message" {
 }
 
 output "now" {
-  value = time_static.now
+  value = time_static.now.rfc3339
 }
