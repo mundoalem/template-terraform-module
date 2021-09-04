@@ -116,9 +116,8 @@ jobs:
           mv mage ~/.local/bin
       - name: Install tfsec
         run: |
-          curl -sSL https://github.com/aquasecurity/tfsec/releases/download/v0.58.6/tfsec-linux-amd64
-          chmod +x tfsec-linux-amd64
-          mv tfsec-linux-amd64 ~/.local/bin/tfsec
+          curl -sSL https://github.com/aquasecurity/tfsec/releases/download/v0.58.6/tfsec-linux-amd64 > ~/.local/bin/tfsec
+          chmod +x ~/.local/bin/tfsec
       - name: Install Dependencies
         if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: |
