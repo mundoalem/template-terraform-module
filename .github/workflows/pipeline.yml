@@ -101,6 +101,19 @@ jobs:
         with:
           path: vendor/
           key: ${{ runner.os }}-go${{ matrix.go-version }}-${{ hashFiles('go.sum') }}
+      - name: Cache mage install
+        id: cache-mage
+        uses: actions/cache@v2
+        with:
+          path: ~/.local/bin/mage
+          key: ${{ runner.os }}-mage-${{ hashFiles('~/.local/bin/mage') }}
+      - name: Install Mage
+        if: steps.cache-mage.outputs.cache-hit != 'true'
+        run: |
+          curl -sSL https://github.com/magefile/mage/releases/download/v1.11.0/mage_1.11.0_Linux-64bit.tar.gz | tar -xzf- mage
+          chmod +x mage
+          mkdir -p ~/.local/bin
+          mv mage ~/.local/bin
       - name: Install Dependencies
         if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: |
