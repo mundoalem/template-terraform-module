@@ -107,6 +107,12 @@ jobs:
         with:
           path: ~/.local/bin/mage
           key: ${{ runner.os }}-mage-${{ hashFiles('~/.local/bin/mage') }}
+      - name: Cache tfsec install
+        id: cache-tfsec
+        uses: actions/cache@v2
+        with:
+          path: ~/.local/bin/tfsec
+          key: ${{ runner.os }}-tfsec-${{ hashFiles('~/.local/bin/tfsec') }}
       - name: Install Mage
         if: steps.cache-mage.outputs.cache-hit != 'true'
         run: |
@@ -115,6 +121,7 @@ jobs:
           mkdir -p ~/.local/bin
           mv mage ~/.local/bin
       - name: Install tfsec
+        if: steps.cache-tfsec.outputs.cache-hit != 'true'
         run: |
           curl -sSL https://github.com/aquasecurity/tfsec/releases/download/v0.58.6/tfsec-linux-amd64 > ~/.local/bin/tfsec
           chmod +x ~/.local/bin/tfsec
@@ -187,10 +194,6 @@ jobs:
         with:
           path: ~/.local/bin/mage
           key: ${{ runner.os }}-mage-${{ hashFiles('~/.local/bin/mage') }}
-      - uses: actions/download-artifact@v2
-        with:
-          name: build-artifacts
-          path: build/
       - name: Install Mage
         if: steps.cache-mage.outputs.cache-hit != 'true'
         run: |
