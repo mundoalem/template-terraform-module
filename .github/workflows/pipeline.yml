@@ -28,6 +28,14 @@ jobs:
         with:
           path: ~/.local/bin/mage
           key: ${{ runner.os }}-mage-${{ hashFiles('~/.local/bin/mage') }}
+      - name: Cache tfenv install
+        id: cache-tfenv
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.tfenv
+            ~/.local/bin
+          key: ${{ runner.os }}-tfenv-${{ hashFiles('.terraform-version') }}
       - name: Install Mage
         if: steps.cache-mage.outputs.cache-hit != 'true'
         run: |
@@ -35,9 +43,15 @@ jobs:
           chmod +x mage
           mkdir -p ~/.local/bin
           mv mage ~/.local/bin
+      - name: Install tfenv
+        if: steps.cache-tfenv.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+          ln -s ~/.tfenv/bin/* ~/.local/bin
       - name: Install Dependencies
         if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: |
+          tfenv install
           go mod vendor
       - name: Lint
         run: |
@@ -69,6 +83,14 @@ jobs:
         with:
           path: ~/.local/bin/mage
           key: ${{ runner.os }}-mage-${{ hashFiles('~/.local/bin/mage') }}
+      - name: Cache tfenv install
+        id: cache-tfenv
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.tfenv
+            ~/.local/bin
+          key: ${{ runner.os }}-tfenv-${{ hashFiles('.terraform-version') }}
       - name: Install Mage
         if: steps.cache-mage.outputs.cache-hit != 'true'
         run: |
@@ -76,9 +98,15 @@ jobs:
           chmod +x mage
           mkdir -p ~/.local/bin
           mv mage ~/.local/bin
+      - name: Install tfenv
+        if: steps.cache-tfenv.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+          ln -s ~/.tfenv/bin/* ~/.local/bin
       - name: Install Dependencies
         if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: |
+          tfenv install
           go mod vendor
       - name: Test
         run: |
@@ -113,6 +141,14 @@ jobs:
         with:
           path: ~/.local/bin/tfsec
           key: ${{ runner.os }}-tfsec-${{ hashFiles('~/.local/bin/tfsec') }}
+      - name: Cache tfenv install
+        id: cache-tfenv
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.tfenv
+            ~/.local/bin
+          key: ${{ runner.os }}-tfenv-${{ hashFiles('.terraform-version') }}
       - name: Install Mage
         if: steps.cache-mage.outputs.cache-hit != 'true'
         run: |
@@ -125,9 +161,15 @@ jobs:
         run: |
           curl -sSL https://github.com/aquasecurity/tfsec/releases/download/v0.58.6/tfsec-linux-amd64 > ~/.local/bin/tfsec
           chmod +x ~/.local/bin/tfsec
+      - name: Install tfenv
+        if: steps.cache-tfenv.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+          ln -s ~/.tfenv/bin/* ~/.local/bin
       - name: Install Dependencies
         if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: |
+          tfenv install
           go mod vendor
       - name: Scan
         run: |
@@ -159,6 +201,14 @@ jobs:
         with:
           path: ~/.local/bin/mage
           key: ${{ runner.os }}-mage-${{ hashFiles('~/.local/bin/mage') }}
+      - name: Cache tfenv install
+        id: cache-tfenv
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.tfenv
+            ~/.local/bin
+          key: ${{ runner.os }}-tfenv-${{ hashFiles('.terraform-version') }}
       - name: Install Mage
         if: steps.cache-mage.outputs.cache-hit != 'true'
         run: |
@@ -166,9 +216,15 @@ jobs:
           chmod +x mage
           mkdir -p ~/.local/bin
           mv mage ~/.local/bin
+      - name: Install tfenv
+        if: steps.cache-tfenv.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+          ln -s ~/.tfenv/bin/* ~/.local/bin
       - name: Install Dependencies
         if: steps.cache-vendor.outputs.cache-hit != 'true'
         run: |
+          tfenv install
           go mod vendor
       - name: Build
         run: |
@@ -188,12 +244,26 @@ jobs:
       - uses: actions/setup-go@v2
         with:
           go-version: ${{ matrix.go-version }}
+      - name: Cache vendor directory
+        id: cache-vendor
+        uses: actions/cache@v2
+        with:
+          path: vendor/
+          key: ${{ runner.os }}-go${{ matrix.go-version }}-${{ hashFiles('go.sum') }}
       - name: Cache mage install
         id: cache-mage
         uses: actions/cache@v2
         with:
           path: ~/.local/bin/mage
           key: ${{ runner.os }}-mage-${{ hashFiles('~/.local/bin/mage') }}
+      - name: Cache tfenv install
+        id: cache-tfenv
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.tfenv
+            ~/.local/bin
+          key: ${{ runner.os }}-tfenv-${{ hashFiles('.terraform-version') }}
       - name: Install Mage
         if: steps.cache-mage.outputs.cache-hit != 'true'
         run: |
@@ -201,6 +271,16 @@ jobs:
           chmod +x mage
           mkdir -p ~/.local/bin
           mv mage ~/.local/bin
+      - name: Install tfenv
+        if: steps.cache-tfenv.outputs.cache-hit != 'true'
+        run: |
+          git clone https://github.com/tfutils/tfenv.git ~/.tfenv
+          ln -s ~/.tfenv/bin/* ~/.local/bin
+      - name: Install Dependencies
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
+        run: |
+          tfenv install
+          go mod vendor
       - name: Release
         run: |
           mage -v build
