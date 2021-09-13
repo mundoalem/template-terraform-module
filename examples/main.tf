@@ -14,10 +14,10 @@
 // along with template-terraform-module. If not, see <https://www.gnu.org/licenses/>.
 
 module "hello_world" {
-  source = "../module"
+  source = "../"
 }
 
 module "hello_john" {
-  source = "../module"
+  source = "../"
   name   = "John Doe"
 }
