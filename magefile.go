@@ -1,3 +1,4 @@
+//go:build mage
 // +build mage
 
 // This file is part of template-terraform-module.
@@ -33,7 +34,7 @@ var (
 	BuildDir      string = path.Join(".", "build")
 	ExamplesDir   string = path.Join(".", "examples")
 	LockTimeout   int    = 5
-	ModuleDir     string = path.Join(".", "module")
+	ModuleDir     string = path.Join(".")
 	PlanFilePath  string = path.Join(BuildDir, "module.plan")
 	TestDir       string = path.Join(".", "test")
 	InputVarsFile string = path.Join(ExamplesDir, "input.tfvars")
