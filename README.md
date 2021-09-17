@@ -40,7 +40,7 @@ the following targets:
 
 These are the software baked in this template:
 
-- [Terraform](https://www.terraform.io/) v1.0.5
+- [Terraform](https://www.terraform.io/) v1.0.6
 - [Go](https://www.python.org/) v1.17.0
 - [Magefile](https://github.com/magefile/mage) v1.11.0
 - [tfenv](https://github.com/tfutils/tfenv) v2.2.2
